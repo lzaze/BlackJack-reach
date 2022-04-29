@@ -83,5 +83,12 @@ export const main = Reach.App(() => {
   Alice.only(() => {
     const wager = declassify(interact.wager);
     const deadline = declassify(interact.deadline);
-  })
+  });
+  Alice.publish(wager, deadline).pay(wager);
+  commit();
+
+  Bob.only(() => {
+    interact.acceptWager(wager);
+  });
+  Bob.pay(wager).timeout(DEADLINE, () => closeTo(Alice, informTimeout));
 });
