@@ -66,7 +66,8 @@ export const main = Reach.App(() => {
 
   const Alice = Participant('Alice', {
     ...Player,
-    wager: UInt
+    wager: UInt,
+    deadline: UInt,
   });
   const Bob = Participant('Bob', {
     ...Player,
@@ -90,5 +91,47 @@ export const main = Reach.App(() => {
   Bob.only(() => {
     interact.acceptWager(wager);
   });
-  Bob.pay(wager).timeout(DEADLINE, () => closeTo(Alice, informTimeout));
+  Bob.pay(wager).timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
+
+  var outcome = 0;
+  invariant(balance() == 2 * wager);
+  while (outcome == 0) {
+    commit();
+
+    Alice.only(() => {
+      const _handAlice = interact.getCard();
+      const [_commitAlice, _saltAlice] = makeCommitment(interact, _handAlice);
+      const commitAlice = declassify(_commitAlice);
+    });
+    Alice.publish(commitAlice)
+      .timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));
+    commit();
+
+    unknowable(Bob, Alice(_handAlice, _saltAlice));
+    Bob.only(() => {
+      const handBob = declassify(interact.getCard());
+    });
+    Bob.publish(handBob)
+      .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
+    commit();
+
+    Alice.only(() => {
+      const saltAlice = declassify(_saltAlice);
+      const handAlice = declassify(_handAlice);
+    });
+    Alice.publish(saltAlice, handAlice)
+      .timeout(relativeTime(deadline), () => closeTo(Bob,informTimeout));
+    checkCommitment(commitAlice, saltAlice, handAlice);
+
+    outcome = winner(handAlice, handBob);
+    continue;
+  }
+
+  transfer(2 * wager).to(outcome == 1 ? Alice : Bob);
+  commit();
+
+  // each([Alice, Bob], () => {
+  //   interact.seeOutcome(outcome);
+  // });
+  
 });
