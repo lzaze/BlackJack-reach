@@ -5,7 +5,15 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: url('./assets/table.jpg');
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.7);
+    background-repeat: no-repeat;
+    background-color: #000000;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
 }
+
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -16,27 +24,35 @@ code {
 }
 
 .App-header {
-    background-color: #282c34;
+    /* background-color: #07a83d; */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
-    color: white;
+    color: rgb(46, 224, 2);
 }
 
 .App-link {
     color: #61dafb;
 }
 
+
 input[type=number] {
     font-size: calc(10px + 2vmin);
-    width: 4em;
+    width: 10em;
+    margin-bottom: 8px;
+    color: green;
+    accent-color: green;
 }
 
 button {
     font-size: calc(10px + 2vmin);
+    width: 10em;
+    margin-bottom: 10px;
+    background-color: greenyellow;
+    accent-color: green;
 }
 
 textarea {

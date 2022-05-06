@@ -8,7 +8,8 @@ exports.Wrapper = class extends React.Component {
     return (
       <div className="App">
         <header className="App-header" id="root">
-          <h1>Rock, Paper, Scissors</h1>
+          <h1>Blackjack</h1>
+          <p1>Welcome to the table</p1>
           {content}
         </header>
       </div>
@@ -32,21 +33,23 @@ exports.FundAccount = class extends React.Component {
     const {bal, standardUnit, defaultFundAmt, parent} = this.props;
     const amt = (this.state || {}).amt || defaultFundAmt;
     return (
-      <div>
-        <h2>Fund account</h2>
+      <div className='Account'>
+        <h2>How much are you playing with today</h2>
         <br />
-        Balance: {bal} {standardUnit}
+        {/* Balance: {bal} {standardUnit} */}
         <hr />
         Would you like to fund your account with additional {standardUnit}?
         <br />
-        (This only works on certain devnets)
+        {/* (This only works on certain devnets) */}
         <br />
         <input
           type='number'
           placeholder={defaultFundAmt}
           onChange={(e) => this.setState({amt: e.currentTarget.value})}
         />
+        <br />
         <button onClick={() => parent.fundAccount(amt)}>Fund Account</button>
+        <br />
         <button onClick={() => parent.skipFundAccount()}>Skip</button>
       </div>
     );

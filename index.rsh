@@ -36,7 +36,7 @@ function calculateDistanceFrom21(distance) {
 const Player = {
   ...hasRandom,
   getCard: Fun([], UInt), // Get a random card from the front end
-  seeOutcome: Fun([UInt, UInt, UInt], Null), // Print the outcome of the game
+  seeOutcome: Fun([UInt], Null), // Print the outcome of the game
   //seeSum: Fun([Array(UInt, 2)], Null), // Total sum of each players hands
   updateOpponentHand: Fun([UInt], Null), // Send opponent's hand information to the frontend
   informTimeout: Fun([], Null),
@@ -130,8 +130,8 @@ export const main = Reach.App(() => {
   transfer(2 * wager).to(outcome == 1 ? Alice : Bob);
   commit();
 
-  // each([Alice, Bob], () => {
-  //   interact.seeOutcome(outcome);
-  // });
+  each([Alice, Bob], () => {
+    interact.seeOutcome(outcome);
+  });
   
 });
